@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
-
-import 'package:flutter_contacts/config.dart';
-import 'package:flutter_contacts/vcard.dart';
-import 'package:flutter_contacts/flutter_contacts.dart';
+import 'config.dart';
+import 'vcard.dart';
+import 'flutter_contacts.dart';
 
 /// A contact.
 ///
@@ -75,6 +74,9 @@ class Contact {
   /// A low-resolution version of the [photo].
   Uint8List? thumbnail;
 
+  String? jobTitle;
+  String? company;
+
   /// The full-resolution contact picture.
   Uint8List? photo;
 
@@ -136,6 +138,8 @@ class Contact {
     this.photo,
     this.isStarred = false,
     Name? name,
+    this.jobTitle = '',
+    this.company = '',
     List<Phone>? phones,
     List<Email>? emails,
     List<Address>? addresses,
@@ -160,6 +164,8 @@ class Contact {
 
   factory Contact.fromJson(Map<String, dynamic> json) => Contact(
         id: (json['id'] as String?) ?? '',
+        jobTitle: (json['jobTitle'] as String?) ?? '',
+        company: (json['company'] as String?) ?? '',
         displayName: (json['displayName'] as String?) ?? '',
         thumbnail: json['thumbnail'] as Uint8List?,
         photo: json['photo'] as Uint8List?,
@@ -204,6 +210,8 @@ class Contact {
       Map<String, dynamic>.from({
         'id': id,
         'displayName': displayName,
+        'jobTitle': jobTitle,
+        'company': company,
         'thumbnail': withThumbnail ? thumbnail : null,
         'photo': withPhoto ? photo : null,
         'isStarred': isStarred,
@@ -257,7 +265,7 @@ class Contact {
 
   @override
   String toString() =>
-      'Contact(id=$id, displayName=$displayName, thumbnail=$thumbnail, '
+      'Contact(id=$id, displayName=$displayName, jobTitle=$jobTitle, company=$company, thumbnail=$thumbnail, '
       'photo=$photo, isStarred=$isStarred, name=$name, phones=$phones, '
       'emails=$emails, addresses=$addresses, organizations=$organizations, '
       'websites=$websites, socialMedias=$socialMedias, events=$events, '

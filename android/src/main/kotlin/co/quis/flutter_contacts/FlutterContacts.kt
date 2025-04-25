@@ -224,6 +224,8 @@ class FlutterContacts {
                     var contact = Contact(
                         /*id=*/id,
                         /*displayName=*/getString(Contacts.DISPLAY_NAME_PRIMARY),
+                        /* jobTitle = */ "",
+                        /* company = */ "",
                         isStarred = getBool(Contacts.STARRED)
                     )
 
@@ -777,6 +779,8 @@ class FlutterContacts {
                     Contact(
                         /*id=*/(cursor.getString(cursor.getColumnIndex(Contacts._ID)) ?: ""),
                         /*displayName=*/(cursor.getString(cursor.getColumnIndex(Contacts.DISPLAY_NAME_PRIMARY)) ?: ""),
+                        /* jobTitle = */ "",
+                        /* company = */ "",
                         isStarred = (cursor.getInt(cursor.getColumnIndex(Contacts.DISPLAY_NAME_PRIMARY)) ?: 0) == 0
                     )
                 )
@@ -1104,6 +1108,15 @@ class FlutterContacts {
                         .withValue(StructuredPostal.REGION, emptyToNull(address.state))
                         .withValue(StructuredPostal.POSTCODE, emptyToNull(address.postalCode))
                         .withValue(StructuredPostal.COUNTRY, emptyToNull(address.country))
+                        .build()
+                )
+            }
+            if (!contact.jobTitle.isNullOrEmpty() || !contact.company.isNullOrEmpty()) {
+                ops.add(
+                    newInsert()
+                        .withValue(Data.MIMETYPE, Organization.CONTENT_ITEM_TYPE)
+                        .withValue(Organization.TITLE, contact.jobTitle)
+                        .withValue(Organization.COMPANY, contact.company)
                         .build()
                 )
             }

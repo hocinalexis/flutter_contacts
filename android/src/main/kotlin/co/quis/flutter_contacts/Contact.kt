@@ -15,6 +15,8 @@ import co.quis.flutter_contacts.properties.Website
 data class Contact(
     var id: String,
     var displayName: String,
+    var jobTitle: String,
+    var company: String,
     var thumbnail: ByteArray? = null,
     var photo: ByteArray? = null,
     val isStarred: Boolean = false,
@@ -35,6 +37,8 @@ data class Contact(
             return Contact(
                 m["id"] as String,
                 m["displayName"] as String,
+                m["jobTitle"] as? String ?: "",
+                m["company"] as? String ?: "",
                 m["thumbnail"] as? ByteArray,
                 m["photo"] as? ByteArray,
                 m["isStarred"] as Boolean,
@@ -56,6 +60,8 @@ data class Contact(
     fun toMap(): Map<String, Any?> = mapOf(
         "id" to id,
         "displayName" to displayName,
+        "jobTitle" to jobTitle,
+        "company" to company,
         "thumbnail" to thumbnail,
         "photo" to photo,
         "isStarred" to isStarred,
