@@ -23,7 +23,7 @@ class FlutterContactsConfig {
   /// and the app crashes when trying to read or write notes without
   /// entitlement. If your app got entitled, you can set this to true to access
   /// notes.
-  bool includeNotesOnIos13AndAbove = false;
+  bool includeNotesOnIos13AndAbove = true;
 
   /// Non-visible contacts on Android are contacts that are not part of a group,
   /// and are excluded by default.

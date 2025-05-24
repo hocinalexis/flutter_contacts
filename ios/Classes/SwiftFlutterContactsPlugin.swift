@@ -408,8 +408,10 @@ public enum FlutterContacts {
             Event(fromMap: $0).addTo(contact)
         }
         if #available(iOS 13, *), !includeNotesOnIos13AndAbove {} else {
-            if let note = (args["notes"] as! [[String: Any]]).first {
-                Note(fromMap: note).addTo(contact)
+            if let notes = args["notes"] as? [[String: Any]], let firstNote = notes.first {
+                    if let noteContent = firstNote["note"] as? String {
+                        contact.note = noteContent
+                    }
             }
         }
         if let photo = args["photo"] as? FlutterStandardTypedData {
@@ -593,7 +595,7 @@ public class SwiftFlutterContactsPlugin: NSObject, FlutterPlugin, FlutterStreamH
                     withThumbnail: true,
                     withPhoto: true,
                     returnUnifiedContacts: true,
-                    includeNotesOnIos13AndAbove: false,
+                    includeNotesOnIos13AndAbove: true,
                     externalIntent: true
                 )
                 if !contacts.isEmpty {
