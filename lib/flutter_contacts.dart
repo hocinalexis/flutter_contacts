@@ -74,6 +74,7 @@ class FlutterContacts {
     bool withAccounts = false,
     bool sorted = true,
     bool deduplicateProperties = true,
+    bool includeNotesOnIos13AndAbove = false,
   }) async =>
       _select(
         withProperties: withProperties,
@@ -83,6 +84,7 @@ class FlutterContacts {
         withAccounts: withAccounts,
         sorted: sorted,
         deduplicateProperties: deduplicateProperties,
+        includeNotesOnIos13AndAbove: includeNotesOnIos13AndAbove,
       );
 
   /// Fetches one contact.
@@ -114,7 +116,7 @@ class FlutterContacts {
     bool withPhoto = true,
     bool withGroups = false,
     bool withAccounts = false,
-    bool deduplicateProperties = true,
+    bool deduplicateProperties = true, bool includeNotesOnIos13AndAbove = false,
   }) async {
     final contacts = await _select(
       id: id,
@@ -125,6 +127,7 @@ class FlutterContacts {
       withAccounts: withAccounts,
       sorted: false,
       deduplicateProperties: deduplicateProperties,
+      includeNotesOnIos13AndAbove: includeNotesOnIos13AndAbove
     );
     if (contacts.length != 1) return null;
     return contacts.first;
@@ -316,6 +319,7 @@ class FlutterContacts {
     bool withAccounts = false,
     bool sorted = true,
     bool deduplicateProperties = true,
+    bool includeNotesOnIos13AndAbove = false,
   }) async {
     // removing the types makes it crash at runtime
     // ignore: omit_local_variable_types
@@ -328,7 +332,7 @@ class FlutterContacts {
       withAccounts,
       config.returnUnifiedContacts,
       config.includeNonVisibleOnAndroid,
-      config.includeNotesOnIos13AndAbove,
+      includeNotesOnIos13AndAbove,
     ]);
     // ignore: omit_local_variable_types
     List<Contact> contacts = untypedContacts
