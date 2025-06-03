@@ -196,6 +196,19 @@ public enum FlutterContacts {
 
         let saveRequest = CNSaveRequest()
         saveRequest.add(contact, toContainerWithIdentifier: nil)
+
+        if let groupsData = args["groups"] as? [[String: Any]], !groupsData.isEmpty {
+            let store = CNContactStore()
+            let allGroups = fetchGroups(store)
+            let groupIds = Set(groupsData.map { Group(fromMap: $0).id })
+
+            for group in allGroups {
+                if groupIds.contains(group.identifier) {
+                    saveRequest.addMember(contact, to: group)
+                }
+            }
+        }
+
         try CNContactStore().execute(saveRequest)
         return Contact(fromContact: contact).toMap()
     }
