@@ -191,7 +191,7 @@ class FlutterContacts {
     final json = await _channel.invokeMethod('update', [
       contact.toJson(),
       withGroups,
-      config.includeNotesOnIos13AndAbove,
+      false,
     ]);
     return Contact.fromJson(Map<String, dynamic>.from(json));
   }
