@@ -29,7 +29,7 @@ class FlutterContactsConfig {
   /// and are excluded by default.
   ///
   /// See https://stackoverflow.com/questions/28665587/what-does-contactscontract-contacts-in-visible-group-mean-in-android
-  bool includeNonVisibleOnAndroid = false;
+  bool includeNonVisibleOnAndroid = true;
 
   /// Return unified contacts instead of raw contacts.
   ///

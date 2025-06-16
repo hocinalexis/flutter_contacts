@@ -166,11 +166,35 @@ class FlutterContacts {
                     )
                 )
             }
+
             if (withGroups) {
                 projection.add(GroupMembership.GROUP_ROW_ID)
             }
 
             val groups = if (withGroups) fetchGroups(resolver) else mapOf<String, PGroup>()
+
+            val contactIdToGroupIds = mutableMapOf<String, MutableList<String>>()
+
+            if (withGroups) {
+                val groupCursor = resolver.query(
+                    ContactsContract.Data.CONTENT_URI,
+                    arrayOf(ContactsContract.Data.CONTACT_ID, ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID),
+                    "${ContactsContract.Data.MIMETYPE} = ?",
+                    arrayOf(ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE),
+                    null
+                )
+
+                groupCursor?.use {
+                    while (it.moveToNext()) {
+                        val contactId = it.getString(0) ?: continue
+                        val groupId = it.getString(1) ?: continue
+                        if (!contactIdToGroupIds.containsKey(contactId)) {
+                            contactIdToGroupIds[contactId] = mutableListOf()
+                        }
+                        contactIdToGroupIds[contactId]!!.add(groupId)
+                    }
+                }
+            }
 
             var selectionClauses = mutableListOf<String>()
             if (!includeNonVisible) {
@@ -422,7 +446,7 @@ class FlutterContacts {
                         GroupMembership.CONTENT_ITEM_TYPE -> {
                             if (withGroups) {
                                 val groupId: String = getString(GroupMembership.GROUP_ROW_ID)
-                                if (groups.containsKey(groupId)) {
+                                if (groups.containsKey(groupId) && contact.groups.none { it.id == groupId }) {
                                     contact.groups += groups[groupId]!!
                                 }
                             }
