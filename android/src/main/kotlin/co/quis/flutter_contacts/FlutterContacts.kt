@@ -573,15 +573,12 @@ class FlutterContacts {
                     )
                     .build()
             )
-            if (contact.photo == null && contact.thumbnail == null) {
+            if (contact.photo == null) {
                 ops.add(
                     ContentProviderOperation.newDelete(Data.CONTENT_URI)
                         .withSelection(
-                            "${RawContacts.CONTACT_ID}=? and ${Data.MIMETYPE}=?",
-                            arrayOf(
-                                contactId,
-                                Photo.CONTENT_ITEM_TYPE
-                            )
+                            "${RawContacts.CONTACT_ID}=? AND ${Data.MIMETYPE}=?",
+                            arrayOf(contactId, Photo.CONTENT_ITEM_TYPE)
                         )
                         .build()
                 )
